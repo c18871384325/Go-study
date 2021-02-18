@@ -1,8 +1,8 @@
 package main
 
 import (
-	"math/rand"
 	"fmt"
+	"math/rand"
 	"time"
 )
 
@@ -10,7 +10,7 @@ func main() {
 	// 种子，只需要设置一次
 	rand.Seed(time.Now().Unix())
 	// rand.Seed(1)
-	
+
 	for i := 0; i < 10; i++ {
 		fmt.Println(rand.Int() % 101)  // 取随机数内101内的余数
 	}
