@@ -1,0 +1,20 @@
+package strutil
+
+import (
+	"fmt"
+	"strconv"
+)
+
+func String2Intv1(n int) string {
+	return strconv.Itoa(n)
+}
+
+func String2Intv2(n int) string {
+	return fmt.Sprintf("%d", n)
+}
+
+
+func String2Intv3(n int64) string {
+	return strconv.FormatInt(n,10)
+}
+
