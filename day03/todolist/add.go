@@ -1,14 +1,31 @@
 package main
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
+	"math/rand"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var task = []map[string]string{
 	{"id": "1", "taskname": "添加节点", "tasktime": "2020-03-19", "taskdone": "2020-03-20"},
 	{"id": "2", "taskname": "删除节点", "tasktime": "2020-03-19", "taskdone": "2020-03-20"},
+}
+
+func init() {
+	rand.Seed(time.Now().Unix())
+}
+
+func randString(n int) string {
+	rt := make([]byte, 0, n)
+	salt := []byte{'1', '2', '3', 'a', 'b', 'c', 'd'}
+	for i := 0; i < n; i++ {
+		rt = append(rt, salt[rand.Intn(len(salt))])
+	}
+	return string(salt)
 }
 
 func genid() int {
@@ -91,25 +108,56 @@ func edit() {
 	}
 }
 
+func passString() int {
+	passsalt := randString(5)
+	inputpass := "cheng2018!"
+	passsha256 := sha256.New()
+	passsha256.Write([]byte(inputpass))
+	passsha256.Write([]byte(passsalt))
+	endpassword := hex.EncodeToString(passsha256.Sum(nil))
+
+	var inpass string
+	fmt.Print("请输入密码：")
+	fmt.Scan(&inpass)
+	inpass256 := sha256.New()
+	inpass256.Write([]byte(inpass))
+	inpass256.Write([]byte(passsalt))
+	inverity := hex.EncodeToString(inpass256.Sum(nil))
+
+	if inverity == endpassword {
+		return 0
+	} else {
+		return 1
+	}
+}
+
 func main() {
-	for true {
-		var input string
-		fmt.Print("请输入操作：")
-		fmt.Scan(&input)
-		switch input {
-		case "add":
-			task = append(task, addtask())
-		case "search":
-			search()
-		case "delete":
-			delete()
-		case "edit":
-			edit()
-		case "exit":
-			return
-		default:
-			fmt.Println("imput error, please imput add/search/exit")
+	
+BREAK:
+	for i := 0; i < 3; i++ {
+		passvalue := passString()
+		if passvalue == 0 {
+			for true {
+				var input string
+				fmt.Print("请输入操作：")
+				fmt.Scan(&input)
+				switch input {
+				case "add":
+					task = append(task, addtask())
+				case "search":
+					search()
+				case "delete":
+					delete()
+				case "edit":
+					edit()
+				case "exit":
+					break BREAK
+				default:
+					fmt.Println("imput error, please imput add/search/exit")
+				}
+			}
+		} else {
+			fmt.Println("密码错误，请重新输入！")
 		}
 	}
-
 }

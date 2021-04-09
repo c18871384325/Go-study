@@ -31,10 +31,18 @@ func main() {
 	fmt.Println(demostring)
 
 
-	// 二分查找
-	demosearch := []int{23,12,4,11,22,3,1,7,8,9}
-	fmt.Println(demosearch[sort.SearchInts(demosearch, 8)] == 8)
-	fmt.Println(demosearch[sort.SearchInts(demosearch, 8)] == 8)
+	// 二分查找   
+	/* searchInts() 使用的条件为切片已经排序，示例：
+	s := []int{5, 2, 6, 3, 1, 4} // 未排序的切片数据
+    sort.Ints(s) //排序后的s为[1 2 3 4 5 6]
+    fmt.Println(sort.SearchInts(s, 3)) //将会输出2 */    
+	// 搜到到值为3的索引，并将索引返回，此处 fmt.Println返回值为2
 
+
+	demosearch := []int{23,12,4,11,22,3,1,7,8,9}
+	sort.Ints(demosearch)
+	fmt.Println(demosearch)
+	fmt.Println(demosearch[sort.SearchInts(demosearch, 8)] == 8)   //true
+	fmt.Println(demosearch[sort.SearchInts(demosearch, 11)] == 11)   //true 
 
 }
