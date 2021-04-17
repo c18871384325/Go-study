@@ -20,6 +20,6 @@ func fileidexists(path string) bool {
 	_, err := os.Stat(path)
 	if err == nil {
 		return true
-	} else if 
+	} else if o
 }
 
