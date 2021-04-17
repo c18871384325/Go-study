@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"todolist/password"
 )
 
 type Task struct {
@@ -16,28 +17,33 @@ var task []Task
 func main() {
 
 	task = make([]Task, 0, 10)
-	
-	for {
-		var operator string
-		fmt.Print("请输入操作： ")
-		fmt.Scan(&operator)
-		switch operator {
-		case "add":
-			Taskadd()
-		case "delete":
-			Taskdelete()
-		case "edit":
-			Taskedit()
-		case "search":
-			Tasksearch()
-		case "exit":
-			return
-		default:
-			fmt.Println("input error, please input add/delete/edit/search/exit")
+	for i := 0; i < 3; i++ {
+		if password.Password() == true {
+			for {
+				var operator string
+				fmt.Print("请输入操作： ")
+				fmt.Scan(&operator)
+				switch operator {
+				case "add":
+					Taskadd()
+				case "delete":
+					Taskdelete()
+				case "edit":
+					Taskedit()
+				case "search":
+					Tasksearch()
+				case "exit":
+					break
+				default:
+					fmt.Println("input error, please input add/delete/edit/search/exit")
+				}
+			}
+		} else {
+			fmt.Println("密码输入错误，请重新输入： ")
+			continue
 		}
 	}
 }
-
 func taskid() int {
 	var id int
 	for _, v := range task {
