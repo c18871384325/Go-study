@@ -17,6 +17,7 @@ var task []Task
 func main() {
 
 	task = make([]Task, 0, 10)
+BREAK:
 	for i := 0; i < 3; i++ {
 		if password.Password() == true {
 			for {
@@ -33,7 +34,7 @@ func main() {
 				case "search":
 					Tasksearch()
 				case "exit":
-					break
+					break BREAK
 				default:
 					fmt.Println("input error, please input add/delete/edit/search/exit")
 				}

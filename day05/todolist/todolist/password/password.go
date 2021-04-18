@@ -4,10 +4,10 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"io"
 	"math/rand"
 	"os"
 	"time"
-
 	"github.com/howeyc/gopass"
 )
 
@@ -18,7 +18,6 @@ func init() {
 func Password() bool {
 	passinit()
 	verity := passverity()
-	fmt.Println(verity)
 	return verity
 }
 
@@ -32,8 +31,6 @@ func passverity() bool {
 	sinputpasswd.Write([]byte(inputpasswd))
 	sha256inputpasswd := hex.EncodeToString(sinputpasswd.Sum(nil))
 
-	fmt.Println(sha256inputpasswd)
-
 	filepass, err := os.Open("password.txt")
 	if err != nil {
 		fmt.Println(err)
@@ -46,14 +43,18 @@ func passverity() bool {
 	for i, v := range savepasswd {
 		if v == '$' {
 			filepass.Seek(int64(i)+1, os.SEEK_SET)
-			filepass.Read(upasswd)
+			n, err := filepass.Read(upasswd)
+			if err == io.EOF {
+				break
+			}
+			upasswd = upasswd[:n]
 		}
 	}
-	fmt.Println(string(upasswd))
-
-	fmt.Println(sha256inputpasswd)
-	fmt.Println(sha256inputpasswd == "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3")
-	return false
+	if sha256inputpasswd == string(upasswd) {
+		return true 
+	} else {
+		return false
+	}
 }
 
 func passinit() {
@@ -68,15 +69,11 @@ func fileexists(path string) bool {
 	_, err := os.Stat(path)
 	if err == nil {
 		return true
-<<<<<<< HEAD
-	} else if o
-=======
 	} else if os.IsNotExist(err) {
 		return false
 	} else {
 		panic(err)
 	}
->>>>>>> 70ebc484c754761872d947f110ef745f80a6ae1a
 }
 
 func createpasswd() {
