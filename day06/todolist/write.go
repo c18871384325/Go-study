@@ -7,11 +7,11 @@ import (
 )
 
 type Task struct {
-	id        int64
-	user      string
-	name      string
-	starttime *time.Time
-	endtime   *time.Time
+	Id        int64
+	User      string
+	Name      string
+	Starttime *time.Time
+	Endtime   *time.Time
 }
 
 const TimeLayte string = "2006-01-02 15:04:05"
@@ -22,11 +22,11 @@ func timestr(t *time.Time) string {
 
 func (Tasks *Task) WriteTo(file *os.File) error {
 	_, err := fmt.Fprintf(file, "%d,%s,%s,%s,%s\n",
-		Tasks.id,
-		Tasks.name,
-		Tasks.user,
-		timestr(Tasks.starttime),
-		timestr(Tasks.endtime),
+		Tasks.Id,
+		Tasks.Name,
+		Tasks.User,
+		timestr(Tasks.Starttime),
+		timestr(Tasks.Endtime),
 	)
 	return err
 }
@@ -34,25 +34,25 @@ func (Tasks *Task) WriteTo(file *os.File) error {
 func main() {
 
 	start := time.Now()
-	starttime := &start
+	//starttime := &start
 	end := time.Now().Add(10 * time.Hour)
-	endtime := &end
+	//endtime := &end
 
 	Tasks := &[]Task{}
 	Tasks = &[]Task{
 		{
-			id:        1,
-			user:      "qing",
-			name:      "整理笔记1",
-			starttime: starttime,
-			endtime:   endtime, //time.Now().Add(24 * time.Hour),
+			Id:        1,
+			User:      "qing",
+			Name:      "整理笔记1",
+			Starttime: &start,
+			Endtime:   &end, //time.Now().Add(24 * time.Hour),
 		},
 		{
-			id:        2,
-			user:      "cheng",
-			name:      "整理笔记2",
-			starttime: starttime,
-			endtime:   endtime,
+			Id:        2,
+			User:      "cheng",
+			Name:      "整理笔记2",
+			Starttime: &start,
+			Endtime:   &end,
 		},
 	}
 
