@@ -2,14 +2,16 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
+	"io"
 	"os"
-	"strconver"
+	"strconv"
 	"strings"
 	"time"
-	"errors"
 )
 
+const TimeLayteOut string = "2006-01-02 15:04:05"
 
 type Task struct {
 	Id        int64
@@ -19,22 +21,50 @@ type Task struct {
 	Endtime   *time.Time
 }
 
-
 func Parsestr(line string) (*Task, error) {
 	node := strings.Split(line, ",")
 	if len(node) < 5 {
 		return nil, errors.New("字符串数量不正确")
 	}
 
-	Id := strconver.Atoi(node[0])
+	Id, err := strconv.Atoi(node[0])
+	if err != nil {
+		return nil, err
+	}
 
 	User := node[1]
 
 	Name := node[2]
 
-	
-}
+	var StartTime, EndTime *time.Time
 
+	if node[3] != "" {
+		if t, err := time.Parse(TimeLayteOut, node[3]); err != nil {
+			return nil, err
+		} else {
+			StartTime = &t
+		}
+	}
+
+	if node[4] != "" {
+		if t, err := time.Parse(TimeLayteOut, node[3]); err != nil {
+			return nil, err
+		} else {
+			EndTime = &t
+		}
+	}
+
+	task := &Task{
+		Id:        int64(Id),
+		User:      User,
+		Name:      Name,
+		Starttime: StartTime,
+		Endtime:   EndTime,
+	}
+
+	return task, nil
+
+}
 
 func main() {
 
@@ -47,7 +77,22 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 
-	scanner.Scan()
-	fmt.Printf("%T, %#v\n", scanner.Text(), scanner.Text())
+	tasks := make([]*Task, 0, 10)
+
+	for scanner.Scan() {
+		task, err := Parsestr(scanner.Text())
+		if err != nil {
+			if err == io.EOF {
+				break
+			} else {
+				fmt.Println(err)
+				return
+			}
+		}
+		tasks = append(tasks, task)
+	}
+	for _, v := range tasks {
+		fmt.Printf("%#v\n", v)
+	}
 
 }
