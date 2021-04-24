@@ -66,6 +66,11 @@ func Parsestr(line string) (*Task, error) {
 
 }
 
+
+
+
+
+
 func main() {
 
 	file, err := os.Open("task.log")

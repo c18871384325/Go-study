@@ -34,11 +34,17 @@ func main() {
 
 	tasks := []*Task{}
 
-	decoding.Decode(&tasks)    // 注意，如果解析的gob文件内的结构体字段非包外可见，则print不到数据的
+	decoding.Decode(&tasks)    // 注意，如果解析的gob文件内的结构体字段非包外可见，则print不到数据的   
+		// Decode 解析后写入tasks 需要是一个指针类型，不为指针类型，会解析为空
 
 	for _, task := range tasks {
 		fmt.Printf("%T, %#v\n", task, task)
 	}
+
+
+
+
+
 }
 
 

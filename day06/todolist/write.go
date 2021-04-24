@@ -7,7 +7,7 @@ import (
 )
 
 type Task struct {
-	Id        int64
+	Id        int
 	User      string
 	Name      string
 	Starttime *time.Time
@@ -31,6 +31,45 @@ func (Tasks *Task) WriteTo(file *os.File) error {
 	return err
 }
 
+func GenId() int {
+	var id int
+	for i, v := Tasks {
+		if v.Id = 0 {
+			id =1
+		} else {
+			id = v.Id + 1
+		}
+	}
+	return id	
+}
+
+func AddTask() *Task {
+	var Name string
+	var User string
+	var Starttime string
+	var Endtime string
+	fmt.Print("请输入用户： ")
+	fmt.Scan(&User)
+	fmt.Print("请输入名称： ")
+	fmt.Scan(&Name)
+	fmt.Print("请输入开始时间： ")
+	fmt.Scan(&Starttime)
+	fmt.Print("请输入结束时间： ")
+	fmt.Scan(&Endtime)
+	
+	if
+
+	add := Task{
+		Id: GenId(),
+		User: User,
+		Name: Name,
+		Starttim: time.Parse(Starttime)
+	}
+
+}
+
+
+
 func main() {
 
 	start := time.Now()
@@ -38,23 +77,8 @@ func main() {
 	end := time.Now().Add(10 * time.Hour)
 	//endtime := &end
 
-	Tasks := &[]Task{}
-	Tasks = &[]Task{
-		{
-			Id:        1,
-			User:      "qing",
-			Name:      "整理笔记1",
-			Starttime: &start,
-			Endtime:   &end, //time.Now().Add(24 * time.Hour),
-		},
-		{
-			Id:        2,
-			User:      "cheng",
-			Name:      "整理笔记2",
-			Starttime: &start,
-			Endtime:   &end,
-		},
-	}
+	Task := make([]*Task, 0, 20)
+	
 
 	files, err := os.Create("task.log")
 	if err != nil {
