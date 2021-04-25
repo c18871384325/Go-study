@@ -33,12 +33,8 @@ func (Tasks *Task) WriteTo(file *os.File) error {
 
 func GenId() int {
 	var id int
-	for i, v := Tasks {
-		if v.Id = 0 {
-			id =1
-		} else {
-			id = v.Id + 1
-		}
+	for i, v := Tasks range {
+			
 	}
 	return id	
 }
@@ -57,14 +53,27 @@ func AddTask() *Task {
 	fmt.Print("请输入结束时间： ")
 	fmt.Scan(&Endtime)
 	
-	if
+	for i:= 0; i < 3; i++ {
+		strtime, err := time.Parse(Starttime)
+		if err != nil {
+			fmt.Println("请输入正确的时间格式， 示例： 2021-04-01 10:10:10")
+			continue
+		} else {
+			break
+		}
 
+	
+	}
+	strtime := time.Parse(Starttime)
+	endtime := time.Parse(Endtime)
 	add := Task{
 		Id: GenId(),
 		User: User,
 		Name: Name,
-		Starttim: time.Parse(Starttime)
+		Starttim: &strtime,
+		Endtime: endtime,
 	}
+	return &add
 
 }
 
@@ -72,12 +81,15 @@ func AddTask() *Task {
 
 func main() {
 
+	addtask := AddTask()
+	fmt.Printf("%#v\n", addtask)
+
 	start := time.Now()
 	//starttime := &start
 	end := time.Now().Add(10 * time.Hour)
 	//endtime := &end
 
-	Task := make([]*Task, 0, 20)
+	Tasks := make([]*Task, 0, 20)
 	
 
 	files, err := os.Create("task.log")
